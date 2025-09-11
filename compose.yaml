@@ -1,0 +1,73 @@
+services:
+
+  # blog
+  blog:
+    image: golang:1.25
+    working_dir: /app
+    volumes:
+      - ./services/blog:/app
+      - ./config/blog/secret:/secret
+    command: "go run main.go"
+    environment:
+      - DATABASE_DSN=root@(blog-db:3306)/mackerel_demo_gocon_2025_blog?time_zone=UTC&parseTime=true&loc=UTC
+      - ACCOUNT_ECDSA_PUBLIC_KEY_FILE=/secret/account-ecdsa-public.pem
+      - ACCOUNT_ADDR=account:50051
+      - RENDERER_ADDR=renderer:50051
+    ports:
+      - "8080:8080"
+    depends_on:
+      - blog-db
+      - account
+      - renderer
+
+  blog-db:
+    image: mysql:8.4
+    volumes:
+      - blog-data:/var/lib/mysql
+      - ./config/blog/db:/docker-entrypoint-initdb.d
+    command:
+      - --lower-case-table-names=1
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+      MYSQL_ROOT_HOST: "%"
+      TZ: UTC
+      MYSQL_DATABASE: mackerel_demo_gocon_2025_blog
+
+  # account
+  account:
+    image: golang:1.25
+    working_dir: /app
+    volumes:
+      - ./services/account:/app
+      - ./config/account/secret:/secret
+    command: "go run main.go"
+    environment:
+      - DATABASE_DSN=root@(account-db:3306)/mackerel_demo_gocon_2025_account?time_zone=UTC&parseTime=true&loc=UTC
+      - ECDSA_PRIVATE_KEY_FILE=/secret/ecdsa-private.pem
+    depends_on:
+      - account-db
+
+  account-db:
+    image: mysql:8.4
+    volumes:
+      - account-data:/var/lib/mysql
+      - ./config/account/db:/docker-entrypoint-initdb.d
+    command:
+      - --lower-case-table-names=1
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+      MYSQL_ROOT_HOST: "%"
+      TZ: UTC
+      MYSQL_DATABASE: mackerel_demo_gocon_2025_account
+
+  # renderer
+  renderer:
+    image: golang:1.25
+    working_dir: /app
+    volumes:
+      - ./services/renderer:/app
+    command: "go run main.go"
+
+volumes:
+  blog-data:
+  account-data:
