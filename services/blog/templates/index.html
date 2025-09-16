@@ -30,13 +30,22 @@
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">タイトル</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">説明</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最新エントリ</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
           {{range .Blogs}}
+          {{$blog := .}}
           <tr>
-            <td class="px-6 py-4 whitespace-nowrap"><a href="/blogs/{{.Path}}" class="text-blue-500 hover:underline">{{.Title}}</a></td>
-            <td class="px-6 py-4 whitespace-nowrap">{{.Description}}</td>
+            <td class="px-6 py-4 whitespace-nowrap"><a href="/blogs/{{$blog.Path}}" class="text-blue-500 hover:underline">{{$blog.Title}}</a></td>
+            <td class="px-6 py-4 whitespace-nowrap">{{$blog.Description}}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{with index $.Entries $blog.ID}}
+              <a href="/blogs/{{$blog.Path}}/entries/{{.ID}}" class="text-blue-500 hover:underline">{{.Title}}</a>
+              {{else}}
+              <span class="text-gray-500">記事がありません</span>
+              {{end}}
+            </td>
           </tr>
           {{end}}
         </tbody>

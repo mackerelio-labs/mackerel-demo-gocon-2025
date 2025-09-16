@@ -152,9 +152,22 @@ func (s *Server) IndexHandler() echo.HandlerFunc {
 			return err
 		}
 
+		// FIXME: N+1 問題
+		entries := make(map[domain.BlogID]*domain.Entry)
+		for _, v := range blogs {
+			blogEntries, _, err := s.app.ListEntriesByBlog(c.Request().Context(), v, 1, 1)
+			if err != nil {
+				return err
+			}
+			if len(blogEntries) == 1 {
+				entries[v.ID] = blogEntries[0]
+			}
+		}
+
 		return c.Render(http.StatusOK, "index.html", map[string]interface{}{
 			"User":        user,
 			"Blogs":       blogs,
+			"Entries":     entries,
 			"Page":        page,
 			"PrevPage":    page - 1,
 			"NextPage":    page + 1,
