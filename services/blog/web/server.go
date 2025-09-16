@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/blog/app"
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/blog/domain"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
 // Server は Web サーバーを表す構造体
@@ -19,10 +20,12 @@ type Server struct {
 }
 
 // NewServer は Web サーバーを作成する
-func NewServer(app *app.App) (*Server, error) {
+func NewServer(app *app.App, serviceName string) (*Server, error) {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
+
+	e.Use(otelecho.Middleware(serviceName))
 
 	renderer, err := newRenderer()
 	if err != nil {

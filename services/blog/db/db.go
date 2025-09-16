@@ -5,11 +5,16 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/uptrace/opentelemetry-go-extra/otelsql"
+	"github.com/uptrace/opentelemetry-go-extra/otelsqlx"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 )
 
 // Connect は DB ハンドルを作成し, 接続が確立するのを待つ
 func Connect(dsn string) (*sqlx.DB, error) {
-	db, err := sqlx.Open("mysql", dsn)
+	db, err := otelsqlx.Open("mysql", dsn, otelsql.WithAttributes(
+		semconv.DBSystemMySQL,
+	))
 	if err != nil {
 		return nil, err
 	}

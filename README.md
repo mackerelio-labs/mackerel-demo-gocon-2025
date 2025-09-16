@@ -5,7 +5,7 @@
 ### アプリケーションの起動
 
 ```console
-export MACKEREL_API_KEY="[YOUR API KEY HERE]"
+export MACKEREL_APIKEY="[YOUR API KEY HERE]"
 docker compose up
 ```
 
