@@ -1,24 +1,32 @@
 {{define "title"}}エントリを編集{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1>エントリを編集</h1>
-    <p><a href="/my/blogs/{{.Blog.Path}}">ブログ詳細に戻る</a></p>
+<div class="container mx-auto px-4 py-8">
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">エントリを編集</h1>
+    <a href="/my/blogs/{{.Blog.Path}}" class="text-blue-500 hover:underline">ブログ詳細に戻る</a>
   </header>
-  <section>
-    <form method="POST" action="/my/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}/edit">
+  <section class="mb-8">
+    <form method="POST" action="/my/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}/edit" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
-      <p><label>タイトル <input type="text" name="title" value="{{.Entry.Title}}"></label></p>
-      <p><label>本文 <textarea name="body">{{.Entry.Body}}</textarea></label></p>
-      <p><input type="submit" value="更新"></p>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">タイトル</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title" value="{{.Entry.Title}}">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="body">本文</label>
+        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="body" name="body" rows="10">{{.Entry.Body}}</textarea>
+      </div>
+      <div class="flex items-center justify-between">
+        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="更新">
+      </div>
     </form>
   </section>
   <section>
     <form method="POST" action="/my/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}/unpublish">
       <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
-      <p><input type="submit" value="削除"></p>
+      <p><input type="submit" value="削除" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"></p>
     </form>
   </section>
-</section>
+</div>
 {{end}}

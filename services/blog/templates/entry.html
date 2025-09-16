@@ -1,25 +1,25 @@
 {{define "title"}}{{.Entry.Title}}{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1><a href="/blogs/{{.Blog.Path}}">{{.Blog.Title}}</a></h1>
-    <p>{{.Blog.Description}}</p>
+<div class="container mx-auto px-4 py-8">
+  <header class="mb-8 pb-4 border-b">
+    <h1 class="text-4xl font-bold"><a href="/blogs/{{.Blog.Path}}" class="text-blue-500 hover:underline">{{.Blog.Title}}</a></h1>
+    <p class="text-gray-600 mt-2">{{.Blog.Description}}</p>
     {{if .IsAuthor}}
-    <p><a href="/my/blogs/{{.Blog.Path}}">管理</a></p>
+    <p class="mt-2"><a href="/my/blogs/{{.Blog.Path}}" class="text-blue-500 hover:underline">管理</a></p>
     {{end}}
   </header>
   <section>
     <article>
-      <header>
-        <h1><a href="/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}">{{.Entry.Title}}</a></h1>
-        <p>{{.Entry.PublishedAt}}</p>
+      <header class="mb-4">
+        <h1 class="text-3xl font-bold"><a href="/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}" class="text-blue-500 hover:underline">{{.Entry.Title}}</a></h1>
+        <p class="text-gray-500 text-sm mt-1">{{.Entry.PublishedAt}}</p>
         {{if .IsAuthor}}
-        <p><a href="/my/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}">編集</a></p>
+        <p class="mt-1"><a href="/my/blogs/{{.Blog.Path}}/entries/{{.Entry.ID}}" class="text-blue-500 hover:underline">編集</a></p>
         {{end}}
       </header>
-      <section>{{.Entry.BodyHTML | unescapedHTML}}</section>
+      <section class="prose max-w-none">{{.Entry.BodyHTML | unescapedHTML}}</section>
     </article>
   </section>
-</section>
+</div>
 {{end}}

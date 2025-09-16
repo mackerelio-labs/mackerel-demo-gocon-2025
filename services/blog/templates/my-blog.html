@@ -1,61 +1,75 @@
 {{define "title"}}{{.Blog.Title}}{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1>{{.Blog.Title}}</h1>
-    <p><a href="/my/blogs">ブログ一覧に戻る</a></p>
-    <p><a href="/blogs/{{.Blog.Path}}" target="_blank" rel="nofollow noopener">Go</a></p>
+<div class="container mx-auto px-4 py-8">
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">{{.Blog.Title}}</h1>
+    <div>
+      <a href="/my/blogs" class="text-blue-500 hover:underline mr-4">ブログ一覧に戻る</a>
+      <a href="/blogs/{{.Blog.Path}}" target="_blank" rel="nofollow noopener" class="text-blue-500 hover:underline">Go</a>
+    </div>
   </header>
-  <section>
-    <dl>
-      <dt>パス</dt>
-      <dd>/blogs/{{.Blog.Path}}</dd>
-      <dt>説明</dt>
-      <dd>{{.Blog.Description}}</dd>
-    </dl>
-    <p><a href="/my/blogs/{{.Blog.Path}}/edit">編集</a></p>
+  <section class="mb-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">パス</dt>
+          <dd class="mt-1 text-sm text-gray-900">/blogs/{{.Blog.Path}}</dd>
+        </div>
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">説明</dt>
+          <dd class="mt-1 text-sm text-gray-900">{{.Blog.Description}}</dd>
+        </div>
+      </dl>
+      <div class="mt-4">
+        <a href="/my/blogs/{{.Blog.Path}}/edit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">編集</a>
+      </div>
+    </div>
   </section>
   <section>
-    <h1>エントリ一覧</h1>
-    <p><a href="/my/blogs/{{.Blog.Path}}/entries/-/publish">新規投稿</a></p>
-    <table>
-      <thead>
-        <tr>
-          <td>タイトル</td>
-          <td>投稿日時</td>
-          <td>編集日時</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        {{range .Entries}}
-        <tr>
-          <td><a href="/my/blogs/{{$.Blog.Path}}/entries/{{.ID}}">{{.Title}}</a></td>
-          <td>{{.PublishedAt}}</td>
-          <td>{{.EditedAt}}</td>
-          <td><a href="/blogs/{{$.Blog.Path}}/entries/{{.ID}}" target="_blank" rel="nofollow noopener">Go</a></td>
-        </tr>
-        {{end}}
-      </tbody>
-    </table>
-    <footer>
-      <p>
-        <span>
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-3xl font-bold">エントリ一覧</h1>
+      <a href="/my/blogs/{{.Blog.Path}}/entries/-/publish" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">新規投稿</a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">タイトル</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">投稿日時</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">編集日時</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {{range .Entries}}
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap"><a href="/my/blogs/{{$.Blog.Path}}/entries/{{.ID}}" class="text-blue-500 hover:underline">{{.Title}}</a></td>
+            <td class="px-6 py-4 whitespace-nowrap">{{.PublishedAt}}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{.EditedAt}}</td>
+            <td class="px-6 py-4 whitespace-nowrap"><a href="/blogs/{{$.Blog.Path}}/entries/{{.ID}}" target="_blank" rel="nofollow noopener" class="text-blue-500 hover:underline">Go</a></td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+    <footer class="mt-4">
+      <p class="flex justify-center items-center">
+        <span class="mr-2">
           {{if .HasPrevPage}}
-          <a href="/my/blogs/{{.Blog.Path}}?page={{.PrevPage}}">&lt;</a>
+          <a href="/my/blogs/{{.Blog.Path}}?page={{.PrevPage}}" class="px-3 py-1 border rounded text-blue-500 hover:bg-gray-100">&lt;</a>
           {{end}}
         </span>
         <span>
           Page {{.Page}}
         </span>
-        <span>
+        <span class="ml-2">
           {{if .HasNextPage}}
-          <a href="/my/blogs/{{.Blog.Path}}?page={{.NextPage}}">&gt;</a>
+          <a href="/my/blogs/{{.Blog.Path}}?page={{.NextPage}}" class="px-3 py-1 border rounded text-blue-500 hover:bg-gray-100">&gt;</a>
           {{end}}
         </span>
       </p>
     </footer>
   </section>
-</section>
+</div>
 {{end}}

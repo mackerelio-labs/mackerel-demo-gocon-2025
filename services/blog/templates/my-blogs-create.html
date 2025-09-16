@@ -1,19 +1,30 @@
 {{define "title"}}新規ブログ作成{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1>新規ブログ作成</h1>
-    <p><a href="/my/blogs">ブログ一覧に戻る</a></p>
+<div class="container mx-auto px-4 py-8">
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">新規ブログ作成</h1>
+    <a href="/my/blogs" class="text-blue-500 hover:underline">ブログ一覧に戻る</a>
   </header>
   <section>
-    <form method="POST" action="/my/blogs">
+    <form method="POST" action="/my/blogs" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
-      <p><label>パス <input type="text" name="path"></label></p>
-      <p><label>タイトル <input type="text" name="title"></label></p>
-      <p><label>説明 <textarea name="description"></textarea></label></p>
-      <p><input type="submit" value="作成"></p>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="path">パス</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="path" type="text" name="path">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">タイトル</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">説明</label>
+        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description"></textarea>
+      </div>
+      <div class="flex items-center justify-between">
+        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="作成">
+      </div>
     </form>
   </section>
-</section>
+</div>
 {{end}}

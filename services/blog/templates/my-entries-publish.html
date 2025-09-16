@@ -1,18 +1,26 @@
 {{define "title"}}新規エントリ投稿{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1>新規エントリ投稿</h1>
-    <p><a href="/my/blogs/{{.Blog.Path}}">ブログ詳細に戻る</a></p>
+<div class="container mx-auto px-4 py-8">
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">新規エントリ投稿</h1>
+    <a href="/my/blogs/{{.Blog.Path}}" class="text-blue-500 hover:underline">ブログ詳細に戻る</a>
   </header>
   <section>
-    <form method="POST" action="/my/blogs/{{.Blog.Path}}/entries/-/publish">
+    <form method="POST" action="/my/blogs/{{.Blog.Path}}/entries/-/publish" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
-      <p><label>タイトル <input type="text" name="title"></label></p>
-      <p><label>本文 <textarea name="body"></textarea></label></p>
-      <p><input type="submit" value="投稿"></p>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">タイトル</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" name="title">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="body">本文</label>
+        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="body" name="body" rows="10"></textarea>
+      </div>
+      <div class="flex items-center justify-between">
+        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="投稿">
+      </div>
     </form>
   </section>
-</section>
+</div>
 {{end}}

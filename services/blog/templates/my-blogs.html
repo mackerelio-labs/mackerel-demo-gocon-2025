@@ -1,47 +1,49 @@
 {{define "title"}}{{.User.Name}} のブログ一覧{{end}}
 
 {{define "body"}}
-<section>
-  <header>
-    <h1>{{.User.Name}} のブログ一覧</h1>
-    <p><a href="/my/blogs/-/create">新規作成</a></p>
+<div class="container mx-auto px-4 py-8">
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-4xl font-bold">{{.User.Name}} のブログ一覧</h1>
+    <a href="/my/blogs/-/create" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">新規作成</a>
   </header>
   <section>
-    <table>
-      <thead>
-        <tr>
-          <td>タイトル</td>
-          <td>説明</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        {{range .Blogs}}
-        <tr>
-          <td><a href="/my/blogs/{{.Path}}">{{.Title}}</a></td>
-          <td>{{.Description}}</td>
-          <td><a href="/blogs/{{.Path}}" target="_blank" rel="nofollow noopener">Go</a></td>
-        </tr>
-        {{end}}
-      </tbody>
-    </table>
-    <footer>
-      <p>
-        <span>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">タイトル</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">説明</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {{range .Blogs}}
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap"><a href="/my/blogs/{{.Path}}" class="text-blue-500 hover:underline">{{.Title}}</a></td>
+            <td class="px-6 py-4 whitespace-nowrap">{{.Description}}</td>
+            <td class="px-6 py-4 whitespace-nowrap"><a href="/blogs/{{.Path}}" target="_blank" rel="nofollow noopener" class="text-blue-500 hover:underline">Go</a></td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+    <footer class="mt-4">
+      <p class="flex justify-center items-center">
+        <span class="mr-2">
           {{if .HasPrevPage}}
-          <a href="/my/blogs?page={{.PrevPage}}">&lt;</a>
+          <a href="/my/blogs?page={{.PrevPage}}" class="px-3 py-1 border rounded text-blue-500 hover:bg-gray-100">&lt;</a>
           {{end}}
         </span>
         <span>
           Page {{.Page}}
         </span>
-        <span>
+        <span class="ml-2">
           {{if .HasNextPage}}
-          <a href="/my/blogs?page={{.NextPage}}">&gt;</a>
+          <a href="/my/blogs?page={{.NextPage}}" class="px-3 py-1 border rounded text-blue-500 hover:bg-gray-100">&gt;</a>
           {{end}}
         </span>
       </p>
     </footer>
   </section>
-</section>
+</div>
 {{end}}

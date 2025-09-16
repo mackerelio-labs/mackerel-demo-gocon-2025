@@ -1,12 +1,23 @@
 {{define "title"}}サインアップ{{end}}
 
 {{define "body"}}
-<section>
-  <form method="POST" action="/signup">
-    <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
-    <p><label>ユーザー名 <input type="text" name="name"></label></p>
-    <p><label>パスワード <input type="text" name="password"></label></p>
-    <p><input type="submit" value="サインアップ"></p>
-  </form>
-</section>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md">
+    <form method="POST" action="/signup" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h1 class="text-3xl font-bold text-center mb-8">サインアップ</h1>
+      <input type="hidden" name="csrf_token" value="{{.CsrfToken}}">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">ユーザー名</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" name="name">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">パスワード</label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password">
+      </div>
+      <div class="flex items-center justify-between">
+        <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="サインアップ">
+      </div>
+    </form>
+  </div>
+</div>
 {{end}}
