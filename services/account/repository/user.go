@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/account/domain"
@@ -16,6 +17,13 @@ type UserRepository struct {
 
 func newUserRepository(db DB) *UserRepository {
 	return &UserRepository{db}
+}
+
+// FIXME: sleepToSimulateSlowShard は特定のシャードが重い状態のシミュレーションを行う
+func sleepToSimulateSlowShard(user *domain.User) {
+	if user.ID%5 == 0 {
+		time.Sleep(3 * time.Second)
+	}
 }
 
 // Create は新規ユーザーを作成し, リポジトリに保存する
@@ -40,6 +48,7 @@ func (r *UserRepository) Create(ctx context.Context, input *domain.CreateUserInp
 	if err != nil {
 		return nil, err
 	}
+	sleepToSimulateSlowShard(user)
 	return user, nil
 }
 
@@ -62,6 +71,7 @@ func (r *UserRepository) FindByID(ctx context.Context, id domain.UserID) (*domai
 		}
 		return nil, err
 	}
+	sleepToSimulateSlowShard(&user)
 	return &user, nil
 }
 
@@ -84,5 +94,6 @@ func (r *UserRepository) FindByName(ctx context.Context, name string) (*domain.U
 		}
 		return nil, err
 	}
+	sleepToSimulateSlowShard(&user)
 	return &user, nil
 }

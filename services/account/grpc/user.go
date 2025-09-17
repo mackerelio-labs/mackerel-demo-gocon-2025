@@ -10,6 +10,9 @@ import (
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/account/app"
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/account/domain"
 	pb "github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/account/pb/account"
+	"go.opentelemetry.io/otel/attribute"
+	otelcodes "go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -48,6 +51,8 @@ func (s *Server) generateToken(user *domain.User) ([]byte, error) {
 
 // Signup は新規ユーザーの登録を行い, トークンを返す
 func (s *Server) Signup(ctx context.Context, in *pb.SignupRequest) (*pb.SignupReply, error) {
+	span := trace.SpanFromContext(ctx)
+
 	user, err := s.app.Signup(ctx, in.Name, in.Password)
 	if err != nil {
 		if errors.Is(err, app.ErrInvalidArgument) {
@@ -56,17 +61,28 @@ func (s *Server) Signup(ctx context.Context, in *pb.SignupRequest) (*pb.SignupRe
 		if errors.Is(err, app.ErrAlreadyRegistered) {
 			return nil, status.Error(codes.AlreadyExists, "already registered")
 		}
+		span.SetStatus(otelcodes.Error, "failed to signin")
+		span.RecordError(err, trace.WithAttributes(attribute.String("user.name", in.Name)))
 		return nil, err
 	}
+	span.SetAttributes(attribute.String("user.id", user.ID.String()))
+	span.AddEvent("user created")
+
 	token, err := s.generateToken(user)
 	if err != nil {
+		span.SetStatus(otelcodes.Error, "failed to generate token")
+		span.RecordError(err)
 		return nil, err
 	}
+	span.AddEvent("token generated")
+
 	return &pb.SignupReply{Token: string(token)}, nil
 }
 
 // Signin はユーザーの認証を行い, トークンを返す
 func (s *Server) Signin(ctx context.Context, in *pb.SigninRequest) (*pb.SigninReply, error) {
+	span := trace.SpanFromContext(ctx)
+
 	user, err := s.app.Signin(ctx, in.Name, in.Password)
 	if err != nil {
 		if errors.Is(err, app.ErrInvalidArgument) {
@@ -75,11 +91,20 @@ func (s *Server) Signin(ctx context.Context, in *pb.SigninRequest) (*pb.SigninRe
 		if errors.Is(err, app.ErrAuthenticationFailed) {
 			return nil, status.Error(codes.Unauthenticated, "authentication failed")
 		}
+		span.SetStatus(otelcodes.Error, "failed to signin")
+		span.RecordError(err, trace.WithAttributes(attribute.String("user.name", in.Name)))
 		return nil, err
 	}
+	span.SetAttributes(attribute.String("user.id", user.ID.String()))
+	span.AddEvent("user authenticated")
+
 	token, err := s.generateToken(user)
 	if err != nil {
+		span.SetStatus(otelcodes.Error, "failed to generate token")
+		span.RecordError(err)
 		return nil, err
 	}
+	span.AddEvent("token generated")
+
 	return &pb.SigninReply{Token: string(token)}, nil
 }
