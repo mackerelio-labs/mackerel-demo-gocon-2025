@@ -6,6 +6,7 @@ toolchain go1.25.0
 
 require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+	github.com/yuin/goldmark v1.7.13
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.63.0
 	go.opentelemetry.io/otel v1.38.0
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.38.0
