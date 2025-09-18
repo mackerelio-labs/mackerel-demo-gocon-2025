@@ -14,7 +14,7 @@ services:
       - ACCOUNT_ADDR=account:50051
       - RENDERER_ADDR=renderer:50051
       - MACKEREL_APIKEY=${MACKEREL_APIKEY}
-      - SERVICE_VERSION=v0.1.0
+      - SERVICE_VERSION=v0.2.0
     ports:
       - "8080:8080"
     depends_on:
