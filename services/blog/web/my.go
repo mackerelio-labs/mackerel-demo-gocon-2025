@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	echo "github.com/labstack/echo/v4"
 	"github.com/mackerelio-labs/mackerel-demo-gocon-2025/services/blog/app"
@@ -22,6 +23,10 @@ func (s *Server) MyBlogsHandler() echo.HandlerFunc {
 		if err != nil {
 			return err
 		}
+
+		// FIXME: 重い計算処理をシミュレート
+		time.Sleep(2 * time.Second)
+
 		return c.Render(http.StatusOK, "my-blogs.html", map[string]interface{}{
 			"User":        user,
 			"Blogs":       blogs,
