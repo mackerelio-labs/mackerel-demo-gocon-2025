@@ -14,6 +14,7 @@ services:
       - ACCOUNT_ADDR=account:50051
       - RENDERER_ADDR=renderer:50051
       - MACKEREL_APIKEY=${MACKEREL_APIKEY}
+      - SERVICE_VERSION=v0.1.0
     ports:
       - "8080:8080"
     depends_on:
@@ -46,6 +47,7 @@ services:
       - DATABASE_DSN=root@(account-db:3306)/mackerel_demo_gocon_2025_account?time_zone=UTC&parseTime=true&loc=UTC
       - ECDSA_PRIVATE_KEY_FILE=/secret/ecdsa-private.pem
       - MACKEREL_APIKEY=${MACKEREL_APIKEY}
+      - SERVICE_VERSION=v0.1.0
     depends_on:
       - account-db
 
@@ -71,6 +73,7 @@ services:
     command: "go run main.go"
     environment:
       - MACKEREL_APIKEY=${MACKEREL_APIKEY}
+      - SERVICE_VERSION=v0.1.0
 
 volumes:
   blog-data:
