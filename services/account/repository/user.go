@@ -19,8 +19,8 @@ func newUserRepository(db DB) *UserRepository {
 	return &UserRepository{db}
 }
 
-// FIXME: sleepToSimulateSlowShard は特定のシャードが重い状態のシミュレーションを行う
-func sleepToSimulateSlowShard(user *domain.User) {
+// FIXME: simulateSomeUserSampling は一部のユーザーをサンプリングして重い計算処理を行う事をシミュレートする
+func simulateSomeUserSampling(user *domain.User) {
 	if user.ID%5 == 0 {
 		time.Sleep(3 * time.Second)
 	}
@@ -48,7 +48,7 @@ func (r *UserRepository) Create(ctx context.Context, input *domain.CreateUserInp
 	if err != nil {
 		return nil, err
 	}
-	sleepToSimulateSlowShard(user)
+	simulateSomeUserSampling(user)
 	return user, nil
 }
 
@@ -71,7 +71,7 @@ func (r *UserRepository) FindByID(ctx context.Context, id domain.UserID) (*domai
 		}
 		return nil, err
 	}
-	sleepToSimulateSlowShard(&user)
+	simulateSomeUserSampling(&user)
 	return &user, nil
 }
 
@@ -94,6 +94,6 @@ func (r *UserRepository) FindByName(ctx context.Context, name string) (*domain.U
 		}
 		return nil, err
 	}
-	sleepToSimulateSlowShard(&user)
+	simulateSomeUserSampling(&user)
 	return &user, nil
 }
