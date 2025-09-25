@@ -17,6 +17,8 @@ account-1     | 2025-09-11T03:25:03.148Z	INFO	app/main.go:66	starting gRPC serve
 blog-1        | 2025-09-11T03:25:03.228Z	INFO	app/main.go:98	starting web server (port = 8080)
 ```
 
+http://localhost:8080 をブラウザで開くとブログサービスのトップページが表示されます.
+
 ## サービス
 
 アプリケーションには以下の 3 つのサービスが存在します.
